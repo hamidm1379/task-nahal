@@ -2,7 +2,6 @@
 
 import { useRouter, useSearchParams, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import Router from "next/router"
 
 interface IFilterProjectsProps {
     onSearch: (query: {
@@ -30,10 +29,7 @@ export default function FliterProjects({ onSearch }: IFilterProjectsProps) {
         if (status) params.set("status", status);
         if (favorite) params.set("favorite", favorite.toString());
 
-        // به‌روزرسانی URL بدون ریلود صفحه
         router.push(`?${params.toString()}`);
-        router.refresh();
-
     };
 
 
@@ -77,10 +73,10 @@ export default function FliterProjects({ onSearch }: IFilterProjectsProps) {
             <div className="col-span-1 lg:col-span-1">
                 <button
                     onClick={() => {
-                        updateQueryParams(); // به‌روزرسانی پارامترهای کوئری
-                        onSearch({ search, status: status, favorite }); // ارسال مقادیر کوئری به والد
+                        updateQueryParams(); 
+                        onSearch({ search, status: status, favorite });
                     }}
-                    className="bg-[#96F207] hover:bg-[#98f207de] text-gray-600 duration-300 hover:text-gray-200 py-2 px-4 rounded">
+                    className="bg-[#96F207] hover:bg-[#98f207de] text-gray-600 duration-300 hover:text-gray-200 py-2 px-4 rounded cursor-pointer">
                     جستجو
                 </button>
             </div>

@@ -12,10 +12,8 @@ interface Props {
 }
 
 const Home: FC<Props> = ({ projects: initialProjects }) => {
-  // استیت برای ذخیره پروژه‌ها
-  const [ali, setAli] = useState<IProject[]>(initialProjects);
+  const [project, setProject] = useState<IProject[]>(initialProjects);
 
-  // تابع برای مدیریت جستجو
   const handleSearch = async ({
     search,
     status,
@@ -27,8 +25,7 @@ const Home: FC<Props> = ({ projects: initialProjects }) => {
     favorite: boolean;
   }) => {
 
-    // ساخت URL با پارامترهای فیلتر
-    let url = "projects"; // فرض کنید API شما در این آدرس قرار دارد
+    let url = "projects"; 
     const params = new URLSearchParams();
 
     if (search) params.set("title", search);
@@ -45,12 +42,11 @@ const Home: FC<Props> = ({ projects: initialProjects }) => {
     const res = await fetch(`http://localhost:3001/projects${fsUrl}`)
     const projects = await res.json();
     console.log(projects, "hamid")
-    setAli(projects)
+    setProject(projects)
   };
 
   useEffect(() => {
-    console.log(ali, "hamid2")
-  }, [ali])
+  }, [project])
 
 
   return (
@@ -58,9 +54,8 @@ const Home: FC<Props> = ({ projects: initialProjects }) => {
       <div className="grid grid-cols-12">
         <div className="col-span-1"></div>
         <div className="col-span-10">
-          {/* ارسال تابع handleSearch به FilterProjects */}
           <FilterProjects onSearch={handleSearch} />
-          <ProjectCard projects={ali} />
+          <ProjectCard projects={project} />
         </div>
         <div className="col-span-1"></div>
       </div>

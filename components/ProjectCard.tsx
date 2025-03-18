@@ -20,11 +20,29 @@ interface Props {
 
 export default function ProjectCard({ projects }: Props) {
     // const projects = props;
-    const [hamid, setHamid]=useState(projects)
+    const [hamid, setHamid] = useState(projects)
 
-    useEffect(()=>{
+    const [favorites, setFavorites] = useState<number[]>(() => {
+        const storedFavorites = localStorage.getItem('favorites');
+        return storedFavorites ? JSON.parse(storedFavorites) : [];
+    });
+
+    const toggleFavorite = (id: number) => {
+        let updatedFavorites;
+        if (favorites.includes(id)) {
+            updatedFavorites = favorites.filter((favId) => favId !== id);
+        } else {
+            updatedFavorites = [...favorites, id];
+        }
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    };
+
+
+
+    useEffect(() => {
         setHamid(projects)
-    },[projects])
+    }, [projects])
 
     return (
         <div dir="rtl" className="grid text-right justify-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-8">
@@ -38,15 +56,17 @@ export default function ProjectCard({ projects }: Props) {
                         <div className="italic text-right rtl:">{project.dateofcompletion}</div>
                         <div className="flex justify-between">
                             <div className="italic font-semibold py-1">{project.price} تومان</div>
-                            <div className={project.favorite ? "text-yellow-500 cursor-pointer" : "text-gray-400"}>
-                                <div className="text-3xl cursor-pointer">&#9733;</div>
+                            <div
+                                className={favorites.includes(project.id) ? "text-yellow-500 cursor-pointer" : "text-gray-400 cursor-pointer"}
+                                onClick={() => toggleFavorite(project.id)}
+                            >
+                                <div className="text-3xl">&#9733;</div>
                             </div>
                         </div>
 
                     </div>
                 </div>
             ))}
-
         </div>
     )
 }
